@@ -8,5 +8,7 @@
 		"moduleResolution": "nodenext",
 		"esModuleInterop": true,
 		"types": ["node", "vitest/globals"]
-	}
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "dist", "vitest.config.ts"]
 }
