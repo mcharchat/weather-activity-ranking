@@ -158,7 +158,7 @@ describe("OpenMeteoClient", () => {
 				.mockResolvedValueOnce({ data: geocodingFixtures.saoPauloSuccess })
 				.mockResolvedValueOnce({ data: weatherFixtures.saoPauloWeather });
 
-			const client = new OpenMeteoClient("");
+			const client = new OpenMeteoClient();
 			const result = await client.getWeatherForCity("São Paulo", {
 				current: ["temperature_2m"],
 			});
@@ -191,7 +191,7 @@ describe("OpenMeteoClient", () => {
 				data: geocodingFixtures.emptyResults,
 			});
 
-			const client = new OpenMeteoClient("");
+			const client = new OpenMeteoClient();
 
 			await expect(client.getWeatherForCity("NonExistentCity")).rejects.toThrow(
 				'City "NonExistentCity" not found',
@@ -201,7 +201,7 @@ describe("OpenMeteoClient", () => {
 		it("should throw error when results is undefined", async () => {
 			mockedAxios.get.mockResolvedValue({ data: geocodingFixtures.noResults });
 
-			const client = new OpenMeteoClient("");
+			const client = new OpenMeteoClient();
 
 			await expect(client.getWeatherForCity("TestCity")).rejects.toThrow(
 				'City "TestCity" not found',

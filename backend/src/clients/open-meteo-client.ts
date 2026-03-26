@@ -9,9 +9,9 @@ import type {
 } from "../types/open-meteo-types.js";
 
 class OpenMeteoClient {
-	private baseUrl: string;
+	private baseUrl?: string | undefined;
 
-	constructor(baseUrl: string) {
+	constructor(baseUrl?: string | undefined) {
 		this.baseUrl = baseUrl;
 	}
 
