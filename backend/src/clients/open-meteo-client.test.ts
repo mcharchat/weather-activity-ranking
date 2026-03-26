@@ -8,11 +8,9 @@ import {
 	expectedApiCalls,
 } from "./__fixtures__/open-meteo-fixtures.js";
 
-// Mock do axios
 vi.mock("axios");
 const mockedAxios = vi.mocked(axios);
 
-// Mock do config helper
 vi.mock("../utils/global-helpers.js", () => ({
 	config: vi.fn((path: string) => {
 		if (path === "open-meteo-config.geocoding.base_url") {
@@ -163,14 +161,12 @@ describe("OpenMeteoClient", () => {
 				current: ["temperature_2m"],
 			});
 
-			// Verify geocoding call
 			expect(mockedAxios.get).toHaveBeenNthCalledWith(
 				1,
 				expectedApiCalls.geocoding.baseUrl,
 				{ params: expectedApiCalls.geocoding.saoPaulo.params },
 			);
 
-			// Verify weather call
 			expect(mockedAxios.get).toHaveBeenNthCalledWith(
 				2,
 				expectedApiCalls.weather.baseUrl,

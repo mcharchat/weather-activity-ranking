@@ -1,4 +1,3 @@
-// Fixtures para testes do OpenMeteoClient
 import type {
 	GeocodingResponse,
 	WeatherResponse,
