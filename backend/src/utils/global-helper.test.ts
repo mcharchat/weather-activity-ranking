@@ -1,4 +1,3 @@
-// escrever testes para a função config do arquivo global-helpers.ts
 import { config } from "./global-helpers.js";
 
 describe("config function", () => {
