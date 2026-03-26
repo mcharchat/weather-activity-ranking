@@ -57,11 +57,11 @@ export interface WeatherResponse {
 	timezone_abbreviation: string;
 	elevation: number;
 	current_units?: Record<string, string>;
-	current?: Record<string, number | string>;
+	current?: CurrentWeatherVariables;
 	hourly_units?: Record<string, string>;
 	hourly?: Record<string, number[] | string[]>;
 	daily_units?: Record<string, string>;
-	daily?: Record<string, number[] | string[]>;
+	daily?: DailyWeatherVariables;
 }
 
 export interface CurrentWeatherVariables {
