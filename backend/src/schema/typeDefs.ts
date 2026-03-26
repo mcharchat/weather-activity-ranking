@@ -9,13 +9,16 @@ export const typeDefs = `#graphql
     type RankedActivity {
         activity: ActivityType!
         score: Float!
-        summary: String!
+    }
+
+    type DailyRanking {
+        date: String!
+        activities: [RankedActivity!]!
     }
 
     type CityActivityRankingResult {
         city: String!
-        country: String!
-        activities: [RankedActivity!]!
+        dailyRankings: [DailyRanking!]!
     }
 
     type Query {
