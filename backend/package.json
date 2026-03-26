@@ -1,0 +1,26 @@
+{
+	"name": "weather-activity-ranking-backend",
+	"version": "1.0.0",
+	"description": "",
+	"license": "MIT",
+	"author": "Maurício Futer Charchat",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {
+		"compile": "tsc",
+		"start": "npm run compile && node ./dist/index.js",
+		"dev": "tsx watch src/index.ts",
+		"test": "vitest",
+		"test:run": "vitest run"
+	},
+	"dependencies": {
+		"@apollo/server": "^5.5.0",
+		"graphql": "^16.13.2"
+	},
+	"devDependencies": {
+		"@types/node": "^25.5.0",
+		"tsx": "^4.21.0",
+		"typescript": "^6.0.2",
+		"vitest": "^4.1.1"
+	}
+}
