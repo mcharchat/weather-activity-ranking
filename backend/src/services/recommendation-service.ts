@@ -1,7 +1,9 @@
 import { OpenMeteoClient } from "../clients/open-meteo-client.js";
+import { CityActivityRankingResult } from "../types/recommendation-types.js";
+import { RankingService } from "./ranking-service.js";
 
 class RecommendationService {
-	async getRecommendations(city: string) {
+	async getRecommendations(city: string): Promise<CityActivityRankingResult> {
 		const client = new OpenMeteoClient();
 		const weatherData = await client.getWeatherForCity(city, {
 			daily: [
@@ -15,8 +17,13 @@ class RecommendationService {
 			],
 			forecast_days: 7,
 		});
-
-        // TODO: Implement RankingService
+		const dailyrankings = RankingService.fromMeteoData({
+			daily: weatherData.daily,
+		});
+		return {
+			city,
+			dailyRankings: dailyrankings,
+		};
 	}
 }
 
