@@ -19,3 +19,12 @@ export interface CityActivityRankingResult {
 	city: string;
 	dailyRankings: DailyRanking[];
 }
+
+export interface ActivityParameter {
+	name: string;
+	weight: number;
+}
+
+export interface ActivityConfig {
+	parameters: ActivityParameter[];
+}
