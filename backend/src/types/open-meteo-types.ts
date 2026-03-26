@@ -83,9 +83,14 @@ export interface CurrentWeatherVariables {
 }
 
 export interface DailyWeatherVariables {
-	weather_code?: number[];
+    time: string[];
 	temperature_2m_max?: number[];
 	temperature_2m_min?: number[];
+	precipitation_sum?: number[];
+	snowfall_sum?: number[];
+	wind_speed_10m_max?: number[];
+	wind_gusts_10m_max?: number[];
+	weather_code?: number[];
 	apparent_temperature_max?: number[];
 	apparent_temperature_min?: number[];
 	sunrise?: string[];
@@ -94,13 +99,9 @@ export interface DailyWeatherVariables {
 	sunshine_duration?: number[];
 	uv_index_max?: number[];
 	uv_index_clear_sky_max?: number[];
-	precipitation_sum?: number[];
 	rain_sum?: number[];
 	showers_sum?: number[];
-	snowfall_sum?: number[];
 	precipitation_hours?: number[];
 	precipitation_probability_max?: number[];
-	wind_speed_10m_max?: number[];
-	wind_gusts_10m_max?: number[];
 	wind_direction_10m_dominant?: number[];
 }
