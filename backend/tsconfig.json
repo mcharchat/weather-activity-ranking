@@ -7,6 +7,6 @@
 		"lib": ["es2023"],
 		"moduleResolution": "nodenext",
 		"esModuleInterop": true,
-		"types": ["node"]
+		"types": ["node", "vitest/globals"]
 	}
 }
