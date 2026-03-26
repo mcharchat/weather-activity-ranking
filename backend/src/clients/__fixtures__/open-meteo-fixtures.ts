@@ -89,6 +89,7 @@ export const weatherFixtures = {
 			temperature_2m_min: "°C",
 		},
 		daily: {
+			time: ["2024-03-26", "2024-03-27", "2024-03-28"],
 			temperature_2m_max: [22, 24, 23],
 			temperature_2m_min: [15, 16, 14],
 		},
