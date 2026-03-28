@@ -53,11 +53,9 @@ export const weatherFixtures = {
 		elevation: 760,
 		current_units: {
 			temperature_2m: "°C",
-			weather_code: "wmo code",
 		},
 		current: {
 			temperature_2m: 25.5,
-			weather_code: 1,
 		},
 	} satisfies WeatherResponse,
 
@@ -152,7 +150,7 @@ export const expectedApiCalls = {
 			params: {
 				latitude: -23.5505,
 				longitude: -46.6333,
-				current: "temperature_2m,weather_code",
+				current: "temperature_2m",
 			},
 		},
 		berlinComplex: {

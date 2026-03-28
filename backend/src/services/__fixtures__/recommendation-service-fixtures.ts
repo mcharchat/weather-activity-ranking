@@ -21,7 +21,6 @@ export const mockWeatherData = {
 			snowfall_sum: [0, 0, 0],
 			wind_speed_10m_max: [15, 12, 18],
 			wind_gusts_10m_max: [20, 15, 22],
-			weather_code: [1, 3, 2],
 		},
 	} satisfies WeatherResponse,
 
@@ -41,7 +40,6 @@ export const mockWeatherData = {
 			snowfall_sum: [0],
 			wind_speed_10m_max: [10],
 			wind_gusts_10m_max: [15],
-			weather_code: [2],
 		},
 	} satisfies WeatherResponse,
 
@@ -61,7 +59,6 @@ export const mockWeatherData = {
 			snowfall_sum: [0],
 			wind_speed_10m_max: [8],
 			wind_gusts_10m_max: [12],
-			weather_code: [1],
 		},
 	} satisfies WeatherResponse,
 
@@ -81,7 +78,6 @@ export const mockWeatherData = {
 			snowfall_sum: [],
 			wind_speed_10m_max: [],
 			wind_gusts_10m_max: [],
-			weather_code: [],
 		},
 	} satisfies WeatherResponse,
 
@@ -101,7 +97,6 @@ export const mockWeatherData = {
 			snowfall_sum: undefined,
 			wind_speed_10m_max: [15],
 			wind_gusts_10m_max: [20, 15],
-			weather_code: [1, 3],
 		},
 	} satisfies WeatherResponse,
 };
@@ -165,7 +160,6 @@ export const expectedApiParameters = {
 			"snowfall_sum",
 			"wind_speed_10m_max",
 			"wind_gusts_10m_max",
-			"weather_code",
 		],
 		forecast_days: 7,
 	},

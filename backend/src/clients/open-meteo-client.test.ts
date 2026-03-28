@@ -103,7 +103,7 @@ describe("OpenMeteoClient", () => {
 			const result = await client.getWeatherForecast({
 				latitude: -23.5505,
 				longitude: -46.6333,
-				current: ["temperature_2m", "weather_code"],
+				current: ["temperature_2m"],
 			});
 
 			expect(mockedAxios.get).toHaveBeenCalledWith(

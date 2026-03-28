@@ -19,7 +19,6 @@ vi.mock("../config/activities-config.js", () => ({
 				{ name: "snowfall_sum", weight: 100.0 },
 				{ name: "wind_speed_10m_max", weight: 1.0 },
 				{ name: "wind_gusts_10m_max", weight: -0.5 },
-				{ name: "weather_code", weight: 0.3 },
 			],
 		},
 		SURFING: {
@@ -30,7 +29,6 @@ vi.mock("../config/activities-config.js", () => ({
 				{ name: "snowfall_sum", weight: -50.0 },
 				{ name: "wind_speed_10m_max", weight: 2.0 },
 				{ name: "wind_gusts_10m_max", weight: -1.0 },
-				{ name: "weather_code", weight: 0.4 },
 			],
 		},
 		OUTDOOR_SIGHTSEEING: {
@@ -41,7 +39,6 @@ vi.mock("../config/activities-config.js", () => ({
 				{ name: "snowfall_sum", weight: -5.0 },
 				{ name: "wind_speed_10m_max", weight: -0.8 },
 				{ name: "wind_gusts_10m_max", weight: -1.2 },
-				{ name: "weather_code", weight: 0.5 },
 			],
 		},
 	},

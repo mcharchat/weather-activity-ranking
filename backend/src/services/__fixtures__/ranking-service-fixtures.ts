@@ -10,7 +10,6 @@ export const mockMeteoData = {
 		snowfall_sum: [20],
 		wind_speed_10m_max: [15],
 		wind_gusts_10m_max: [20],
-		weather_code: [3],
 	} satisfies DailyWeatherVariables,
 
 	idealSurfingConditions: {
@@ -21,7 +20,6 @@ export const mockMeteoData = {
 		snowfall_sum: [0],
 		wind_speed_10m_max: [20],
 		wind_gusts_10m_max: [15],
-		weather_code: [1],
 	} satisfies DailyWeatherVariables,
 
 	threeDaysVaried: {
@@ -32,7 +30,6 @@ export const mockMeteoData = {
 		snowfall_sum: [0, 1, 0],
 		wind_speed_10m_max: [10, 15, 12],
 		wind_gusts_10m_max: [15, 20, 18],
-		weather_code: [1, 2, 3],
 	} satisfies DailyWeatherVariables,
 
 	missingVariables: {
@@ -48,7 +45,6 @@ export const mockMeteoData = {
 		snowfall_sum: [25],
 		wind_speed_10m_max: [10],
 		wind_gusts_10m_max: [12],
-		weather_code: [3],
 	} satisfies DailyWeatherVariables,
 
 	badSkiingWeather: {
@@ -59,7 +55,6 @@ export const mockMeteoData = {
 		snowfall_sum: [0],
 		wind_speed_10m_max: [5],
 		wind_gusts_10m_max: [8],
-		weather_code: [1],
 	} satisfies DailyWeatherVariables,
 
 	twoDaysConsistency: {
@@ -70,7 +65,6 @@ export const mockMeteoData = {
 		snowfall_sum: [0, 1],
 		wind_speed_10m_max: [10, 15],
 		wind_gusts_10m_max: [15, 20],
-		weather_code: [1, 2],
 	} satisfies DailyWeatherVariables,
 };
 
