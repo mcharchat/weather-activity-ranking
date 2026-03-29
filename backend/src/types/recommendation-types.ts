@@ -6,28 +6,34 @@ export enum ActivityType {
 }
 
 export interface RankedActivity {
-	activity: ActivityType;
-	score: number;
+	readonly activity: ActivityType;
+	readonly score: number;
 }
 
 export interface DailyRanking {
-	date: string;
-	activities: RankedActivity[];
+	readonly date: string;
+	readonly activities: RankedActivity[];
+}
+export interface BaseRankingResult {
+	readonly dailyRankings: DailyRanking[];
+}
+export interface CoordinatesRankingResult extends BaseRankingResult {
+	readonly latitude: number;
+	readonly longitude: number;
 }
 
-export interface CityActivityRankingResult {
-	city: string;
-	dailyRankings: DailyRanking[];
+export interface CityActivityRankingResult extends BaseRankingResult {
+	readonly city: string;
 }
 
 export interface ActivityParameter {
-	name: string;
-	min_acceptable_value: number;
-	max_acceptable_value: number;
-	optimal_value: number;
-	weight: number;
+	readonly name: string;
+	readonly min_acceptable_value: number;
+	readonly max_acceptable_value: number;
+	readonly optimal_value: number;
+	readonly weight: number;
 }
 
 export interface ActivityConfig {
-	parameters: ActivityParameter[];
+	readonly parameters: ActivityParameter[];
 }

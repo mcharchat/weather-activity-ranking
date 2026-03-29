@@ -1,5 +1,5 @@
 import { OpenMeteoClient } from "../clients/open-meteo-client.js";
-import { CityActivityRankingResult } from "../types/recommendation-types.js";
+import { CityActivityRankingResult, CoordinatesRankingResult } from "../types/recommendation-types.js";
 import { RankingService } from "./ranking-service.js";
 
 /**
@@ -8,14 +8,20 @@ import { RankingService } from "./ranking-service.js";
  */
 class RecommendationService {
 	/**
-	 * Gets activity recommendations for a specific city based on weather forecast
-	 * @param city - Name of the city to get recommendations for
-	 * @returns Promise resolving to city activity ranking results with 7-day forecast
-	 * @throws Error if weather data cannot be fetched or city is not found
+	 * Gets activity recommendations for specific coordinates based on weather forecast
+	 * @param latitude - Latitude of the location to get recommendations for
+	 * @param longitude - Longitude of the location to get recommendations for
+	 * @returns Promise resolving to coordinates activity ranking results with 7-day forecast
+	 * @throws Error if weather data cannot be fetched or coordinates are not found
 	 */
-	async getRecommendations(city: string): Promise<CityActivityRankingResult> {
-		const client = new OpenMeteoClient();
-		const weatherData = await client.getWeatherForCity(city, {
+	async getRecommendationsForCoordinates(
+		latitude: number,
+		longitude: number,
+	): Promise<CoordinatesRankingResult> {
+		const weatherClient = OpenMeteoClient.weatherForecast();
+		const weatherData = await weatherClient.getWeatherForecast({
+			latitude,
+			longitude,
 			daily: [
 				"temperature_2m_max",
 				"temperature_2m_min",
@@ -30,7 +36,8 @@ class RecommendationService {
 			daily: weatherData.daily,
 		});
 		return {
-			city,
+			latitude,
+			longitude,
 			dailyRankings: dailyrankings,
 		};
 	}

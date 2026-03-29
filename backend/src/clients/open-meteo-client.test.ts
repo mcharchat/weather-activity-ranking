@@ -136,30 +136,6 @@ describe("OpenMeteoClient", () => {
 		});
 	});
 
-	describe("getWeatherForCity", () => {
-		it("should throw error when city is not found", async () => {
-			mockedAxios.get.mockResolvedValue({
-				data: geocodingFixtures.emptyResults,
-			});
-
-			const client = new OpenMeteoClient();
-
-			await expect(client.getWeatherForCity("NonExistentCity")).rejects.toThrow(
-				'City "NonExistentCity" not found',
-			);
-		});
-
-		it("should throw error when results is undefined", async () => {
-			mockedAxios.get.mockResolvedValue({ data: geocodingFixtures.noResults });
-
-			const client = new OpenMeteoClient();
-
-			await expect(client.getWeatherForCity("TestCity")).rejects.toThrow(
-				'City "TestCity" not found',
-			);
-		});
-	});
-
 	describe("getMarineForecast", () => {
 		it("should get marine forecast for coastal city", async () => {
 			mockedAxios.get.mockResolvedValue({

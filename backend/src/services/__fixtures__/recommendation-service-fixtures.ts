@@ -170,15 +170,15 @@ export const expectedApiParameters = {
 	},
 };
 
-export const testCities = [
-	"São Paulo",
-	"Paris",
-	"New York",
-	"Tokyo",
-	"London",
-	"EmptyCity",
-	"TestCity",
-	"InvalidCity",
+export const testCoordinates = [
+	{ latitude: -23.5505, longitude: -46.6333, name: "São Paulo" },
+	{ latitude: 48.8566, longitude: 2.3522, name: "Paris" },
+	{ latitude: 40.7128, longitude: -74.006, name: "New York" },
+	{ latitude: 35.6762, longitude: 139.6503, name: "Tokyo" },
+	{ latitude: 51.5074, longitude: -0.1278, name: "London" },
+	{ latitude: 0, longitude: 0, name: "EmptyLocation" },
+	{ latitude: 52.52, longitude: 13.41, name: "TestLocation" },
+	{ latitude: 999, longitude: 999, name: "InvalidLocation" },
 ];
 
 export const testErrors = {

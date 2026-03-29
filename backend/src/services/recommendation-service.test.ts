@@ -5,12 +5,14 @@ import {
 	mockWeatherData,
 	mockRankings,
 	expectedApiParameters,
-	testCities,
+	testCoordinates,
 	testErrors,
 } from "./__fixtures__/recommendation-service-fixtures.js";
 
 vi.mock("../clients/open-meteo-client.js", () => ({
-	OpenMeteoClient: vi.fn(),
+	OpenMeteoClient: {
+		weatherForecast: vi.fn(),
+	},
 }));
 
 vi.mock("./ranking-service.js", () => ({
@@ -30,25 +32,23 @@ vi.mock("../config/activities-config.js", () => ({
 
 describe("RecommendationService", () => {
 	let recommendationService: RecommendationService;
-	let mockOpenMeteoClient: any;
+	let mockWeatherClient: any;
 
 	beforeEach(() => {
 		vi.clearAllMocks();
 
-		mockOpenMeteoClient = {
-			getWeatherForCity: vi.fn(),
+		mockWeatherClient = {
+			getWeatherForecast: vi.fn(),
 		};
 
-		vi.mocked(OpenMeteoClient).mockImplementation(function () {
-			return mockOpenMeteoClient;
-		});
+		vi.mocked(OpenMeteoClient.weatherForecast).mockReturnValue(mockWeatherClient);
 
 		recommendationService = new RecommendationService();
 	});
 
-	describe("getRecommendations", () => {
-		it("should get recommendations for a city successfully", async () => {
-			mockOpenMeteoClient.getWeatherForCity.mockResolvedValue(
+	describe("getRecommendationsForCoordinates", () => {
+		it("should get recommendations for coordinates successfully", async () => {
+			mockWeatherClient.getWeatherForecast.mockResolvedValue(
 				mockWeatherData.saoPauloThreeDays,
 			);
 
@@ -57,27 +57,31 @@ describe("RecommendationService", () => {
 				mockRankings.saoPauloThreeDays,
 			);
 
-			const result = await recommendationService.getRecommendations(
-				testCities[0],
+			const result = await recommendationService.getRecommendationsForCoordinates(
+				testCoordinates[0].latitude,
+				testCoordinates[0].longitude,
 			);
 
-			expect(mockOpenMeteoClient.getWeatherForCity).toHaveBeenCalledWith(
-				testCities[0],
-				expectedApiParameters.standard,
-			);
+			expect(OpenMeteoClient.weatherForecast).toHaveBeenCalled();
+			expect(mockWeatherClient.getWeatherForecast).toHaveBeenCalledWith({
+				latitude: testCoordinates[0].latitude,
+				longitude: testCoordinates[0].longitude,
+				...expectedApiParameters.standard,
+			});
 
 			expect(RankingService.fromMeteoData).toHaveBeenCalledWith({
 				daily: mockWeatherData.saoPauloThreeDays.daily,
 			});
 
 			expect(result).toEqual({
-				city: testCities[0],
+				latitude: testCoordinates[0].latitude,
+				longitude: testCoordinates[0].longitude,
 				dailyRankings: mockRankings.saoPauloThreeDays,
 			});
 		});
 
 		it("should pass correct parameters to OpenMeteoClient", async () => {
-			mockOpenMeteoClient.getWeatherForCity.mockResolvedValue(
+			mockWeatherClient.getWeatherForecast.mockResolvedValue(
 				mockWeatherData.parisOneDay,
 			);
 
@@ -86,52 +90,69 @@ describe("RecommendationService", () => {
 				mockRankings.empty,
 			);
 
-			await recommendationService.getRecommendations(testCities[1]);
-
-			expect(mockOpenMeteoClient.getWeatherForCity).toHaveBeenCalledWith(
-				testCities[1],
-				expectedApiParameters.standard,
+			await recommendationService.getRecommendationsForCoordinates(
+				testCoordinates[1].latitude,
+				testCoordinates[1].longitude,
 			);
+
+			expect(mockWeatherClient.getWeatherForecast).toHaveBeenCalledWith({
+				latitude: testCoordinates[1].latitude,
+				longitude: testCoordinates[1].longitude,
+				...expectedApiParameters.standard,
+			});
 		});
 
-		it("should handle different cities correctly", async () => {
-			const cities = ["New York", "Tokyo", "London"];
+		it("should handle different coordinates correctly", async () => {
+			const coordinates = [
+				{ latitude: 40.7128, longitude: -74.0060 },
+				{ latitude: 35.6762, longitude: 139.6503 },
+				{ latitude: 51.5074, longitude: -0.1278 },
+			];
 
-			mockOpenMeteoClient.getWeatherForCity.mockResolvedValue(
+			mockWeatherClient.getWeatherForecast.mockResolvedValue(
 				mockWeatherData.genericCity,
 			);
 
 			const { RankingService } = await import("./ranking-service.js");
 			vi.mocked(RankingService.fromMeteoData).mockReturnValue([]);
 
-			for (const city of cities) {
-				const result = await recommendationService.getRecommendations(city);
-
-				expect(result.city).toBe(city);
-				expect(mockOpenMeteoClient.getWeatherForCity).toHaveBeenCalledWith(
-					city,
-					expect.any(Object),
+			for (const coord of coordinates) {
+				const result = await recommendationService.getRecommendationsForCoordinates(
+					coord.latitude,
+					coord.longitude,
 				);
+
+				expect(result.latitude).toBe(coord.latitude);
+				expect(result.longitude).toBe(coord.longitude);
+				expect(mockWeatherClient.getWeatherForecast).toHaveBeenCalledWith({
+					latitude: coord.latitude,
+					longitude: coord.longitude,
+					...expectedApiParameters.standard,
+				});
 			}
 		});
 
 		it("should propagate errors from OpenMeteoClient", async () => {
-			mockOpenMeteoClient.getWeatherForCity.mockRejectedValue(
+			mockWeatherClient.getWeatherForecast.mockRejectedValue(
 				testErrors.weatherFetchError,
 			);
 
 			await expect(
-				recommendationService.getRecommendations(testCities[7]),
+				recommendationService.getRecommendationsForCoordinates(
+					testCoordinates[7].latitude,
+					testCoordinates[7].longitude,
+				),
 			).rejects.toThrow(testErrors.weatherFetchError.message);
 
-			expect(mockOpenMeteoClient.getWeatherForCity).toHaveBeenCalledWith(
-				testCities[7],
-				expect.any(Object),
-			);
+			expect(mockWeatherClient.getWeatherForecast).toHaveBeenCalledWith({
+				latitude: testCoordinates[7].latitude,
+				longitude: testCoordinates[7].longitude,
+				...expectedApiParameters.standard,
+			});
 		});
 
 		it("should handle empty weather data gracefully", async () => {
-			mockOpenMeteoClient.getWeatherForCity.mockResolvedValue(
+			mockWeatherClient.getWeatherForecast.mockResolvedValue(
 				mockWeatherData.emptyData,
 			);
 
@@ -140,18 +161,20 @@ describe("RecommendationService", () => {
 				mockRankings.empty,
 			);
 
-			const result = await recommendationService.getRecommendations(
-				testCities[5],
+			const result = await recommendationService.getRecommendationsForCoordinates(
+				testCoordinates[5].latitude,
+				testCoordinates[5].longitude,
 			);
 
 			expect(result).toEqual({
-				city: testCities[5],
+				latitude: testCoordinates[5].latitude,
+				longitude: testCoordinates[5].longitude,
 				dailyRankings: mockRankings.empty,
 			});
 		});
 
-		it("should create a new OpenMeteoClient instance", async () => {
-			mockOpenMeteoClient.getWeatherForCity.mockResolvedValue(
+		it("should create a weather forecast client instance", async () => {
+			mockWeatherClient.getWeatherForecast.mockResolvedValue(
 				mockWeatherData.genericCity,
 			);
 
@@ -160,13 +183,16 @@ describe("RecommendationService", () => {
 				mockRankings.empty,
 			);
 
-			await recommendationService.getRecommendations(testCities[6]);
+			await recommendationService.getRecommendationsForCoordinates(
+				testCoordinates[6].latitude,
+				testCoordinates[6].longitude,
+			);
 
-			expect(vi.mocked(OpenMeteoClient)).toHaveBeenCalled();
+			expect(OpenMeteoClient.weatherForecast).toHaveBeenCalled();
 		});
 
 		it("should handle weather data with optional fields", async () => {
-			mockOpenMeteoClient.getWeatherForCity.mockResolvedValue(
+			mockWeatherClient.getWeatherForecast.mockResolvedValue(
 				mockWeatherData.withOptionalFields,
 			);
 
@@ -175,18 +201,46 @@ describe("RecommendationService", () => {
 				mockRankings.withOptionalFields,
 			);
 
-			const result = await recommendationService.getRecommendations(
-				testCities[0],
+			const result = await recommendationService.getRecommendationsForCoordinates(
+				testCoordinates[0].latitude,
+				testCoordinates[0].longitude,
 			);
 
 			expect(result).toEqual({
-				city: testCities[0],
+				latitude: testCoordinates[0].latitude,
+				longitude: testCoordinates[0].longitude,
 				dailyRankings: mockRankings.withOptionalFields,
 			});
 
 			expect(RankingService.fromMeteoData).toHaveBeenCalledWith({
 				daily: mockWeatherData.withOptionalFields.daily,
 			});
+		});
+
+		it("should handle edge case coordinates", async () => {
+			const edgeCaseCoordinates = [
+				{ latitude: 0, longitude: 0 },
+				{ latitude: -90, longitude: 0 },
+				{ latitude: 90, longitude: 0 },
+				{ latitude: 0, longitude: 180 },
+			];
+
+			mockWeatherClient.getWeatherForecast.mockResolvedValue(
+				mockWeatherData.genericCity,
+			);
+
+			const { RankingService } = await import("./ranking-service.js");
+			vi.mocked(RankingService.fromMeteoData).mockReturnValue([]);
+
+			for (const coord of edgeCaseCoordinates) {
+				const result = await recommendationService.getRecommendationsForCoordinates(
+					coord.latitude,
+					coord.longitude,
+				);
+
+				expect(result.latitude).toBe(coord.latitude);
+				expect(result.longitude).toBe(coord.longitude);
+			}
 		});
 	});
 });

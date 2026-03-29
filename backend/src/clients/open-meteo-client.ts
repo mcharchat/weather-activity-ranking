@@ -128,30 +128,6 @@ class OpenMeteoClient {
 			throw error;
 		}
 	}
-
-	async getWeatherForCity(
-		cityName: string,
-		options?: WeatherForecastOptions,
-	): Promise<WeatherResponse> {
-		const geocodingClient = OpenMeteoClient.geocoding();
-		const { results } = await geocodingClient.searchLocations({
-			name: cityName,
-			count: 1,
-		});
-
-		if (!results || results.length === 0) {
-			throw new Error(`City "${cityName}" not found`);
-		}
-
-		const location = results[0];
-
-		const weatherClient = OpenMeteoClient.weatherForecast();
-		return weatherClient.getWeatherForecast({
-			latitude: location.latitude,
-			longitude: location.longitude,
-			...options,
-		});
-	}
 }
 
 export { OpenMeteoClient };
