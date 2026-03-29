@@ -16,12 +16,13 @@ export const typeDefs = `#graphql
         activities: [RankedActivity!]!
     }
 
-    type CityActivityRankingResult {
-        city: String!
+    type CoordinatesActivityRankingResult {
+        latitude: Float!
+        longitude: Float!
         dailyRankings: [DailyRanking!]!
     }
 
     type Query {
-        cityActivityRanking(city: String!): CityActivityRankingResult!
+        coordinatesActivityRanking(latitude: Float!, longitude: Float!): CoordinatesActivityRankingResult!
     }
 `;
