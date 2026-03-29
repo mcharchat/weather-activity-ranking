@@ -46,7 +46,6 @@ export function Body({
   )
 
   const rankings = data?.coordinatesActivityRanking?.dailyRankings ?? []
-  console.log("🚀 ~ Body ~ rankings:", rankings)
 
   if (error) {
     console.error("Error fetching locations:", error)
