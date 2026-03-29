@@ -15,7 +15,7 @@ class CoordinatesService {
 		location: string,
 	): Promise<GeocodingResponse> {
 		const geocodingClient = OpenMeteoClient.geocoding();
-		const geocodingData = await geocodingClient.searchLocations({ name: location, count: 1 });
+		const geocodingData = await geocodingClient.searchLocations({ name: location});
 		if (!geocodingData.results || geocodingData.results.length === 0) {
 			throw new Error(`Location not found: ${location}`);
 		}
