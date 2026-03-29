@@ -12,7 +12,7 @@ import { useQuery } from "@apollo/client/react"
 import { useState } from "react"
 
 const gqlQuery = gql`
-  query ExampleQuery($location: String!) {
+  query LocationCoordinatesQuery($location: String!) {
     locationCoordinates(location: $location) {
       results {
         admin1
@@ -79,7 +79,7 @@ export function LocationCombobox({
             <ComboboxItem
               key={index}
               value={location.name}
-              onSelect={() => onSelectLocation(location)}
+              onClick={() => onSelectLocation(location)}
             >
               <div className="flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center">

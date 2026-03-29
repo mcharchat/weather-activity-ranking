@@ -1,6 +1,7 @@
 import { Header } from "@/components/header"
 import type { Location } from "@/types/location-types"
 import { useState } from "react"
+import { Body } from "@/components/body"
 
 export function App() {
   const [selectedActivity, setSelectedActivity] = useState<string>("skiing")
@@ -15,7 +16,7 @@ export function App() {
         onSelectActivity={setSelectedActivity}
         onSelectLocation={setSelectedLocation}
       />
-      <div className="flex">oi</div>
+      <Body selectedLocation={selectedLocation} selectedActivity={selectedActivity} />
     </div>
   )
 }
