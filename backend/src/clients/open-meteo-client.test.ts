@@ -4,6 +4,7 @@ import { OpenMeteoClient } from "./open-meteo-client.js";
 import {
 	geocodingFixtures,
 	weatherFixtures,
+	marineWeatherFixtures,
 	errorFixtures,
 	expectedApiCalls,
 } from "./__fixtures__/open-meteo-fixtures.js";
@@ -18,6 +19,9 @@ vi.mock("../utils/global-helpers.js", () => ({
 		}
 		if (path === "open-meteo-config.weather_forecast.base_url") {
 			return expectedApiCalls.weather.baseUrl;
+		}
+		if (path === "open-meteo-config.marine.base_url") {
+			return expectedApiCalls.marine.baseUrl;
 		}
 		return "";
 	}),
@@ -36,6 +40,11 @@ describe("OpenMeteoClient", () => {
 
 		it("should create weather forecast client with correct base URL", () => {
 			const client = OpenMeteoClient.weatherForecast();
+			expect(client).toBeInstanceOf(OpenMeteoClient);
+		});
+
+		it("should create marine client with correct base URL", () => {
+			const client = OpenMeteoClient.marine();
 			expect(client).toBeInstanceOf(OpenMeteoClient);
 		});
 	});
@@ -94,7 +103,6 @@ describe("OpenMeteoClient", () => {
 	});
 
 	describe("getWeatherForecast", () => {
-
 		it("should include all optional parameters in weather request", async () => {
 			mockedAxios.get.mockResolvedValue({ data: weatherFixtures.minimal });
 
@@ -149,6 +157,62 @@ describe("OpenMeteoClient", () => {
 			await expect(client.getWeatherForCity("TestCity")).rejects.toThrow(
 				'City "TestCity" not found',
 			);
+		});
+	});
+
+	describe("getMarineForecast", () => {
+		it("should get marine forecast for coastal city", async () => {
+			mockedAxios.get.mockResolvedValue({
+				data: marineWeatherFixtures.coastalCity,
+			});
+
+			const client = OpenMeteoClient.marine();
+			const result = await client.getMarineForecast({
+				latitude: -22.9707,
+				longitude: -43.1823,
+			});
+
+			expect(mockedAxios.get).toHaveBeenCalledWith(
+				expectedApiCalls.marine.baseUrl,
+				{ params: expectedApiCalls.marine.coastalCity.params },
+			);
+
+			expect(result).toEqual(marineWeatherFixtures.coastalCity);
+			expect(result.daily?.wave_height_max).toEqual([1.5, 2.0]);
+		});
+
+		it("should get marine forecast for non-coastal city", async () => {
+			mockedAxios.get.mockResolvedValue({
+				data: marineWeatherFixtures.nonCoastalCity,
+			});
+
+			const client = OpenMeteoClient.marine();
+			const result = await client.getMarineForecast({
+				latitude: -23.5505,
+				longitude: -46.6333,
+			});
+
+			expect(mockedAxios.get).toHaveBeenCalledWith(
+				expectedApiCalls.marine.baseUrl,
+				{ params: expectedApiCalls.marine.nonCoastalCity.params },
+			);
+
+			expect(result).toEqual(marineWeatherFixtures.nonCoastalCity);
+			expect(result.daily?.wave_height_max).toEqual([null]);
+		});
+
+		it("should handle marine forecast API errors", async () => {
+			mockedAxios.get.mockRejectedValue(errorFixtures.badRequest);
+			mockedAxios.isAxiosError.mockReturnValue(true);
+
+			const client = OpenMeteoClient.marine();
+
+			await expect(
+				client.getMarineForecast({
+					latitude: 999,
+					longitude: 999,
+				}),
+			).rejects.toThrow("Marine Weather API error: 400 Bad Request");
 		});
 	});
 

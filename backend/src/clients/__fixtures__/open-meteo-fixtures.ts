@@ -1,6 +1,7 @@
 import type {
 	GeocodingResponse,
 	WeatherResponse,
+	MarineWeatherResponse,
 } from "../../types/open-meteo-types.js";
 
 export const geocodingFixtures = {
@@ -65,6 +66,42 @@ export const weatherFixtures = {
 			temperature_2m_min: [15, 16],
 		},
 	} satisfies WeatherResponse,
+};
+
+export const marineWeatherFixtures = {
+	coastalCity: {
+		latitude: -22.9707,
+		longitude: -43.1823,
+		generationtime_ms: 2.1,
+		utc_offset_seconds: -10800,
+		timezone: "America/Sao_Paulo",
+		timezone_abbreviation: "-03",
+		elevation: 0,
+		daily_units: {
+			wave_height_max: "m",
+		},
+		daily: {
+			time: ["2024-03-26", "2024-03-27"],
+			wave_height_max: [1.5, 2.0],
+		},
+	} satisfies MarineWeatherResponse,
+
+	nonCoastalCity: {
+		latitude: -23.5505,
+		longitude: -46.6333,
+		generationtime_ms: 1.5,
+		utc_offset_seconds: -10800,
+		timezone: "America/Sao_Paulo",
+		timezone_abbreviation: "-03",
+		elevation: 760,
+		daily_units: {
+			wave_height_max: "m",
+		},
+		daily: {
+			time: ["2024-03-26"],
+			wave_height_max: [null],
+		},
+	} satisfies MarineWeatherResponse,
 };
 
 export const errorFixtures = {
@@ -135,6 +172,28 @@ export const expectedApiCalls = {
 			params: {
 				latitude: 0,
 				longitude: 0,
+			},
+		},
+	},
+
+	marine: {
+		baseUrl: "https://marine-api.open-meteo.com/v1/marine",
+		coastalCity: {
+			params: {
+				latitude: -22.9707,
+				longitude: -43.1823,
+			},
+		},
+		nonCoastalCity: {
+			params: {
+				latitude: -23.5505,
+				longitude: -46.6333,
+			},
+		},
+		invalidCoords: {
+			params: {
+				latitude: 999,
+				longitude: 999,
 			},
 		},
 	},
