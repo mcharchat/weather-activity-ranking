@@ -11,11 +11,19 @@ class CoordinatesService {
 	 * @returns Promise resolving to geocoding response with coordinates
 	 * @throws Error if coordinates cannot be fetched or location is not found
 	 */
-	async getLocationCoordinates(
-		location: string,
-	): Promise<GeocodingResponse> {
+	async getLocationCoordinates(location: string): Promise<GeocodingResponse> {
+		if (!location || location.trim().length === 0) {
+			throw new Error("Location name cannot be empty");
+		}
+
+		if (location.trim().length < 2) {
+			throw new Error("Location name must have at least 2 characters");
+		}
+
 		const geocodingClient = OpenMeteoClient.geocoding();
-		const geocodingData = await geocodingClient.searchLocations({ name: location});
+		const geocodingData = await geocodingClient.searchLocations({
+			name: location.trim(),
+		});
 		if (!geocodingData.results || geocodingData.results.length === 0) {
 			throw new Error(`Location not found: ${location}`);
 		}
