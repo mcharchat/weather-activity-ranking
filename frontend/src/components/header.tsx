@@ -1,13 +1,16 @@
 import { Icon } from "@iconify/react"
 import { LocationCombobox } from "./location-combobox"
 import { ActivitiesTabs } from "./activities-tabs"
+import type { Location } from "@/types/location-types"
 
 export function Header({
   selectedActivity,
   onSelectActivity,
+  onSelectLocation,
 }: {
   selectedActivity: string
   onSelectActivity: (activity: string) => void
+  onSelectLocation: (location: Location | null) => void
 }) {
   return (
     <div className="flex flex-col justify-center bg-primary text-primary-foreground">
@@ -19,8 +22,10 @@ export function Header({
         </p>
       </div>
       <div className="flex flex-col gap-1 px-4">
-        <LocationCombobox />
-        <div className="w-[calc(100vw-2rem)] overflow-x-scroll overflow-y-hidden">
+        <LocationCombobox
+          onSelectLocation={onSelectLocation}
+        />
+        <div className="w-[calc(100vw-2rem)] overflow-x-auto overflow-y-hidden hide-scrollbar">
           <ActivitiesTabs
             selectedActivity={selectedActivity}
             onSelectActivity={onSelectActivity}

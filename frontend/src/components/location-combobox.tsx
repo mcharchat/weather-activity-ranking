@@ -6,24 +6,10 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "@/components/ui/combobox"
+import type { Location, LocationCoordinatesQuery } from "@/types/location-types"
 import { gql } from "@apollo/client"
 import { useQuery } from "@apollo/client/react"
 import { useState } from "react"
-
-type Location = {
-  name: string
-  latitude: number
-  longitude: number
-  country?: string
-  country_code?: string
-  admin1?: string
-}
-
-type LocationCoordinatesQuery = {
-  locationCoordinates: {
-    results: Location[]
-  }
-}
 
 const gqlQuery = gql`
   query ExampleQuery($location: String!) {
@@ -39,7 +25,11 @@ const gqlQuery = gql`
     }
   }
 `
-export function LocationCombobox() {
+export function LocationCombobox({
+  onSelectLocation,
+}: {
+  onSelectLocation: (location: Location | null) => void
+}) {
   const [query, setQuery] = useState("")
 
   const { data, loading, error } = useQuery<LocationCoordinatesQuery>(
@@ -86,7 +76,11 @@ export function LocationCombobox() {
         )}
         <ComboboxList>
           {locations.map((location: Location, index: number) => (
-            <ComboboxItem key={index} value={location.name}>
+            <ComboboxItem
+              key={index}
+              value={location.name}
+              onSelect={() => onSelectLocation(location)}
+            >
               <div className="flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center">
                   <img

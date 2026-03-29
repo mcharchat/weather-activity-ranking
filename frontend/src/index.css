@@ -48,6 +48,20 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* Classe personalizada para ocultar scrollbar */
+.hide-scrollbar {
+  /* IE and Edge */
+  -ms-overflow-style: none;
+  
+  /* Firefox */
+  scrollbar-width: none;
+  
+  /* Safari and Chrome */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 :root {
     --background: oklch(1 0 0);
     --foreground: oklch(0.147 0.004 49.25);
