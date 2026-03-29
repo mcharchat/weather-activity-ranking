@@ -6,6 +6,7 @@ import type {
 	GeocodingParams,
 	GeocodingResponse,
 	WeatherResponse,
+	MarineWeatherResponse,
 } from "../types/open-meteo-types.js";
 
 class OpenMeteoClient {
@@ -25,6 +26,10 @@ class OpenMeteoClient {
 		);
 	};
 
+	static marine = (): OpenMeteoClient => {
+		return new OpenMeteoClient(config("open-meteo-config.marine.base_url"));
+	};
+
 	async getWeatherForecast(
 		params: WeatherForecastParams,
 	): Promise<WeatherResponse> {
@@ -34,14 +39,8 @@ class OpenMeteoClient {
 				longitude: params.longitude,
 			};
 
-			if (params.hourly) {
-				queryParams.hourly = params.hourly.join(",");
-			}
 			if (params.daily) {
 				queryParams.daily = params.daily.join(",");
-			}
-			if (params.current) {
-				queryParams.current = params.current.join(",");
 			}
 			if (params.timezone) {
 				queryParams.timezone = params.timezone;
@@ -59,6 +58,40 @@ class OpenMeteoClient {
 			if (axios.isAxiosError(error)) {
 				throw new Error(
 					`Weather API error: ${error.response?.status} ${error.response?.statusText || error.message}`,
+				);
+			}
+			throw error;
+		}
+	}
+
+	async getMarineForecast(
+		params: WeatherForecastParams,
+	): Promise<MarineWeatherResponse> {
+		try {
+			const queryParams: any = {
+				latitude: params.latitude,
+				longitude: params.longitude,
+			};
+
+			if (params.daily) {
+				queryParams.daily = params.daily.join(",");
+			}
+			if (params.timezone) {
+				queryParams.timezone = params.timezone;
+			}
+			if (params.forecast_days) {
+				queryParams.forecast_days = params.forecast_days;
+			}
+
+			const { data } = await axios.get<MarineWeatherResponse>(this.baseUrl, {
+				params: queryParams,
+			});
+
+			return data;
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				throw new Error(
+					`Marine Weather API error: ${error.response?.status} ${error.response?.statusText || error.message}`,
 				);
 			}
 			throw error;

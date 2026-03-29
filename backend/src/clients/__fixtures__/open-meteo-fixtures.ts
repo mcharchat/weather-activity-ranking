@@ -16,6 +16,7 @@ export const geocodingFixtures = {
 			},
 		],
 		generationtime_ms: 1.5,
+		elevation: 760,
 	} satisfies GeocodingResponse,
 
 	parisSuccess: {
@@ -30,68 +31,22 @@ export const geocodingFixtures = {
 			},
 		],
 		generationtime_ms: 1.2,
+		elevation: 35,
 	} satisfies GeocodingResponse,
 
 	emptyResults: {
 		results: [],
 		generationtime_ms: 1.0,
+		elevation: 0,
 	} satisfies GeocodingResponse,
 
 	noResults: {
 		generationtime_ms: 1.0,
+		elevation: 0,
 	} satisfies GeocodingResponse,
 };
 
 export const weatherFixtures = {
-	saoPauloWeather: {
-		latitude: -23.5505,
-		longitude: -46.6333,
-		generationtime_ms: 2.5,
-		utc_offset_seconds: -10800,
-		timezone: "America/Sao_Paulo",
-		timezone_abbreviation: "BRT",
-		elevation: 760,
-		current_units: {
-			temperature_2m: "°C",
-		},
-		current: {
-			temperature_2m: 25.5,
-		},
-	} satisfies WeatherResponse,
-
-	berlinWeather: {
-		latitude: 52.52,
-		longitude: 13.41,
-		generationtime_ms: 2.1,
-		utc_offset_seconds: 3600,
-		timezone: "Europe/Berlin",
-		timezone_abbreviation: "CET",
-		elevation: 74,
-		current_units: {
-			temperature_2m: "°C",
-		},
-		current: {
-			temperature_2m: 18.3,
-		},
-		hourly_units: {
-			temperature_2m: "°C",
-			precipitation: "mm",
-		},
-		hourly: {
-			temperature_2m: [18, 19, 20, 21],
-			precipitation: [0, 0.1, 0.2, 0],
-		},
-		daily_units: {
-			temperature_2m_max: "°C",
-			temperature_2m_min: "°C",
-		},
-		daily: {
-			time: ["2024-03-26", "2024-03-27", "2024-03-28"],
-			temperature_2m_max: [22, 24, 23],
-			temperature_2m_min: [15, 16, 14],
-		},
-	} satisfies WeatherResponse,
-
 	minimal: {
 		latitude: 0,
 		longitude: 0,
@@ -100,6 +55,15 @@ export const weatherFixtures = {
 		timezone: "UTC",
 		timezone_abbreviation: "UTC",
 		elevation: 0,
+		daily_units: {
+			temperature_2m_max: "°C",
+			temperature_2m_min: "°C",
+		},
+		daily: {
+			time: ["2024-03-26", "2024-03-27"],
+			temperature_2m_max: [22, 24],
+			temperature_2m_min: [15, 16],
+		},
 	} satisfies WeatherResponse,
 };
 
@@ -150,15 +114,12 @@ export const expectedApiCalls = {
 			params: {
 				latitude: -23.5505,
 				longitude: -46.6333,
-				current: "temperature_2m",
 			},
 		},
 		berlinComplex: {
 			params: {
 				latitude: 52.52,
 				longitude: 13.41,
-				current: "temperature_2m",
-				hourly: "temperature_2m,precipitation",
 				daily: "temperature_2m_max,temperature_2m_min",
 				timezone: "Europe/Berlin",
 				forecast_days: 7,

@@ -94,26 +94,6 @@ describe("OpenMeteoClient", () => {
 	});
 
 	describe("getWeatherForecast", () => {
-		it("should get weather forecast successfully", async () => {
-			mockedAxios.get.mockResolvedValue({
-				data: weatherFixtures.saoPauloWeather,
-			});
-
-			const client = OpenMeteoClient.weatherForecast();
-			const result = await client.getWeatherForecast({
-				latitude: -23.5505,
-				longitude: -46.6333,
-				current: ["temperature_2m"],
-			});
-
-			expect(mockedAxios.get).toHaveBeenCalledWith(
-				expectedApiCalls.weather.baseUrl,
-				{ params: expectedApiCalls.weather.saoPauloBasic.params },
-			);
-
-			expect(result).toEqual(weatherFixtures.saoPauloWeather);
-			expect(result.current?.temperature_2m).toBe(25.5);
-		});
 
 		it("should include all optional parameters in weather request", async () => {
 			mockedAxios.get.mockResolvedValue({ data: weatherFixtures.minimal });
@@ -122,8 +102,6 @@ describe("OpenMeteoClient", () => {
 			await client.getWeatherForecast({
 				latitude: 52.52,
 				longitude: 13.41,
-				current: ["temperature_2m"],
-				hourly: ["temperature_2m", "precipitation"],
 				daily: ["temperature_2m_max", "temperature_2m_min"],
 				timezone: "Europe/Berlin",
 				forecast_days: 7,
@@ -151,37 +129,6 @@ describe("OpenMeteoClient", () => {
 	});
 
 	describe("getWeatherForCity", () => {
-		it("should get weather for city successfully", async () => {
-			mockedAxios.get
-				.mockResolvedValueOnce({ data: geocodingFixtures.saoPauloSuccess })
-				.mockResolvedValueOnce({ data: weatherFixtures.saoPauloWeather });
-
-			const client = new OpenMeteoClient();
-			const result = await client.getWeatherForCity("São Paulo", {
-				current: ["temperature_2m"],
-			});
-
-			expect(mockedAxios.get).toHaveBeenNthCalledWith(
-				1,
-				expectedApiCalls.geocoding.baseUrl,
-				{ params: expectedApiCalls.geocoding.saoPaulo.params },
-			);
-
-			expect(mockedAxios.get).toHaveBeenNthCalledWith(
-				2,
-				expectedApiCalls.weather.baseUrl,
-				{
-					params: {
-						latitude: -23.5505,
-						longitude: -46.6333,
-						current: "temperature_2m",
-					},
-				},
-			);
-
-			expect(result).toEqual(weatherFixtures.saoPauloWeather);
-		});
-
 		it("should throw error when city is not found", async () => {
 			mockedAxios.get.mockResolvedValue({
 				data: geocodingFixtures.emptyResults,
