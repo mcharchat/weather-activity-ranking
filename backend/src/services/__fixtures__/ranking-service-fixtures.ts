@@ -4,22 +4,22 @@ import { ActivityType } from "../../types/recommendation-types.js";
 export const mockMeteoData = {
 	idealSkiingConditions: {
 		time: ["2024-03-26"],
-		temperature_2m_max: [-5],
-		temperature_2m_min: [-10],
-		precipitation_sum: [10],
-		snowfall_sum: [20],
-		wind_speed_10m_max: [15],
-		wind_gusts_10m_max: [20],
+		temperature_2m_max: [-2],
+		temperature_2m_min: [-5],
+		precipitation_sum: [1],
+		snowfall_sum: [7],
+		wind_speed_10m_max: [8],
+		wind_gusts_10m_max: [8],
 	} satisfies DailyWeatherVariables,
 
 	idealSurfingConditions: {
 		time: ["2024-03-26"],
 		temperature_2m_max: [25],
-		temperature_2m_min: [18],
+		temperature_2m_min: [20],
 		precipitation_sum: [0],
 		snowfall_sum: [0],
-		wind_speed_10m_max: [20],
-		wind_gusts_10m_max: [15],
+		wind_speed_10m_max: [15],
+		wind_gusts_10m_max: [10],
 	} satisfies DailyWeatherVariables,
 
 	threeDaysVaried: {
@@ -39,10 +39,10 @@ export const mockMeteoData = {
 
 	goodSkiingWeather: {
 		time: ["2024-03-26"],
-		temperature_2m_max: [-10],
-		temperature_2m_min: [-15],
-		precipitation_sum: [15],
-		snowfall_sum: [25],
+		temperature_2m_max: [-3],
+		temperature_2m_min: [-8],
+		precipitation_sum: [2],
+		snowfall_sum: [12],
 		wind_speed_10m_max: [10],
 		wind_gusts_10m_max: [12],
 	} satisfies DailyWeatherVariables,
@@ -70,12 +70,12 @@ export const mockMeteoData = {
 
 export const expectedScores = {
 	idealSkiing: {
-		skiing: 2080.9,
-		tolerance: 1,
+		skiing: 10.0,
+		tolerance: 0.1,
 	},
 	idealSurfing: {
-		surfing: 80.9,
-		tolerance: 1,
+		surfing: 10.0,
+		tolerance: 0.1,
 	},
 };
 
@@ -89,10 +89,11 @@ export const expectedActivities = [
 	ActivityType.SKIING,
 	ActivityType.SURFING,
 	ActivityType.OUTDOOR_SIGHTSEEING,
+	ActivityType.INDOOR_SIGHTSEEING,
 ];
 
 export const testConstants = {
-	expectedActivitiesCount: 3,
+	expectedActivitiesCount: 4,
 	threeDaysCount: 3,
 	twoDaysCount: 2,
 	oneDayCount: 1,

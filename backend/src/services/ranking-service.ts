@@ -5,6 +5,7 @@ import {
 	DailyRanking,
 	RankedActivity,
 	ActivityConfig,
+	ActivityParameter,
 } from "../types/recommendation-types.js";
 
 /**
@@ -61,6 +62,7 @@ class RankingService {
 				daily,
 				dayIndex,
 				activityConfig,
+				activityKey,
 			);
 
 			return {
@@ -75,12 +77,14 @@ class RankingService {
 	 * @param daily - Daily weather variables
 	 * @param dayIndex - Index of the day
 	 * @param activityConfig - Configuration for the activity
+	 * @param activityKey - The key of the activity being scored
 	 * @returns Calculated score for the activity
 	 */
 	private static calculateActivityScore(
 		daily: DailyWeatherVariables,
 		dayIndex: number,
 		activityConfig: ActivityConfig,
+		activityKey: ActivityType,
 	): number {
 		return activityConfig.parameters.reduce((totalScore, parameter) => {
 			const weatherValue = this.getWeatherValue(
@@ -88,7 +92,12 @@ class RankingService {
 				parameter.name,
 				dayIndex,
 			);
-			return totalScore + weatherValue * parameter.weight;
+			const normalizedValue = this.normalizeWeatherValue(
+				weatherValue,
+				parameter.name,
+				activityKey,
+			);
+			return totalScore + normalizedValue * parameter.weight;
 		}, 0);
 	}
 
@@ -121,6 +130,43 @@ class RankingService {
 		}
 
 		return value;
+	}
+
+	/**
+	 *  Normalize the weather value to a score between 0 and 1 based on the acceptable range and optimal value
+	 * @param value - The actual weather value
+	 * @param parameterName - The name of the weather parameter to normalize
+	 * @param activityKey - The key of the activity for which the parameter is being normalized
+	 * @returns Normalized score between 0 and 1
+	 */
+	private static normalizeWeatherValue(
+		value: number,
+		parameterName: string,
+		activityKey: ActivityType,
+	): number {
+		const parameterConfig: ActivityParameter | undefined = activitiesConfig[activityKey].parameters.find(
+			(p) => p.name === parameterName,
+		);
+
+		if (!parameterConfig) {
+			return 0;
+		}
+
+		const { min_acceptable_value, max_acceptable_value, optimal_value } = parameterConfig;
+
+		if (value < min_acceptable_value || value > max_acceptable_value) {
+			return 0;
+		}
+
+		if (value === optimal_value) {
+			return 1;
+		}
+
+		if (value < optimal_value) {
+			return (value - min_acceptable_value) / (optimal_value - min_acceptable_value);
+		}
+
+		return (max_acceptable_value - value) / (max_acceptable_value - optimal_value);
 	}
 }
 export { RankingService };

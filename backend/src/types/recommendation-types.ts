@@ -22,6 +22,9 @@ export interface CityActivityRankingResult {
 
 export interface ActivityParameter {
 	name: string;
+	min_acceptable_value: number;
+	max_acceptable_value: number;
+	optimal_value: number;
 	weight: number;
 }
 

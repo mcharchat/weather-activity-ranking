@@ -24,6 +24,7 @@ vi.mock("../config/activities-config.js", () => ({
 		SKIING: { parameters: [] },
 		SURFING: { parameters: [] },
 		OUTDOOR_SIGHTSEEING: { parameters: [] },
+		INDOOR_SIGHTSEEING: { parameters: [] },
 	},
 }));
 

@@ -106,25 +106,28 @@ export const mockRankings = {
 		{
 			date: "2024-03-26",
 			activities: [
-				{ activity: ActivityType.SURFING, score: 85.5 },
-				{ activity: ActivityType.OUTDOOR_SIGHTSEEING, score: 72.3 },
-				{ activity: ActivityType.SKIING, score: -15.2 },
+				{ activity: ActivityType.SURFING, score: 9.8 },
+				{ activity: ActivityType.OUTDOOR_SIGHTSEEING, score: 7.2 },
+				{ activity: ActivityType.INDOOR_SIGHTSEEING, score: 6.5 },
+				{ activity: ActivityType.SKIING, score: 0.0 },
 			],
 		},
 		{
 			date: "2024-03-27",
 			activities: [
-				{ activity: ActivityType.OUTDOOR_SIGHTSEEING, score: 68.1 },
-				{ activity: ActivityType.SURFING, score: 65.8 },
-				{ activity: ActivityType.SKIING, score: -8.9 },
+				{ activity: ActivityType.OUTDOOR_SIGHTSEEING, score: 8.1 },
+				{ activity: ActivityType.INDOOR_SIGHTSEEING, score: 7.8 },
+				{ activity: ActivityType.SURFING, score: 7.5 },
+				{ activity: ActivityType.SKIING, score: 0.0 },
 			],
 		},
 		{
 			date: "2024-03-28",
 			activities: [
-				{ activity: ActivityType.SURFING, score: 92.1 },
-				{ activity: ActivityType.OUTDOOR_SIGHTSEEING, score: 75.6 },
-				{ activity: ActivityType.SKIING, score: -12.7 },
+				{ activity: ActivityType.SURFING, score: 9.5 },
+				{ activity: ActivityType.OUTDOOR_SIGHTSEEING, score: 6.8 },
+				{ activity: ActivityType.INDOOR_SIGHTSEEING, score: 5.9 },
+				{ activity: ActivityType.SKIING, score: 0.0 },
 			],
 		},
 	] satisfies DailyRanking[],
@@ -133,17 +136,19 @@ export const mockRankings = {
 		{
 			date: "2024-03-26",
 			activities: [
-				{ activity: ActivityType.SURFING, score: 70.0 },
-				{ activity: ActivityType.OUTDOOR_SIGHTSEEING, score: 65.0 },
-				{ activity: ActivityType.SKIING, score: 10.0 },
+				{ activity: ActivityType.SURFING, score: 9.8 },
+				{ activity: ActivityType.OUTDOOR_SIGHTSEEING, score: 7.2 },
+				{ activity: ActivityType.INDOOR_SIGHTSEEING, score: 6.5 },
+				{ activity: ActivityType.SKIING, score: 0.0 },
 			],
 		},
 		{
 			date: "2024-03-27",
 			activities: [
-				{ activity: ActivityType.OUTDOOR_SIGHTSEEING, score: 60.0 },
-				{ activity: ActivityType.SURFING, score: 55.0 },
-				{ activity: ActivityType.SKIING, score: 5.0 },
+				{ activity: ActivityType.OUTDOOR_SIGHTSEEING, score: 8.1 },
+				{ activity: ActivityType.INDOOR_SIGHTSEEING, score: 7.8 },
+				{ activity: ActivityType.SURFING, score: 7.5 },
+				{ activity: ActivityType.SKIING, score: 0.0 },
 			],
 		},
 	] satisfies DailyRanking[],

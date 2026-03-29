@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { RankingService } from "./ranking-service.js";
 import { ActivityType } from "../types/recommendation-types.js";
 import {
@@ -8,41 +8,6 @@ import {
 	expectedActivities,
 	testConstants,
 } from "./__fixtures__/ranking-service-fixtures.js";
-
-vi.mock("../config/activities-config.js", () => ({
-	default: {
-		SKIING: {
-			parameters: [
-				{ name: "temperature_2m_max", weight: -2.0 },
-				{ name: "temperature_2m_min", weight: -1.5 },
-				{ name: "precipitation_sum", weight: 5.0 },
-				{ name: "snowfall_sum", weight: 100.0 },
-				{ name: "wind_speed_10m_max", weight: 1.0 },
-				{ name: "wind_gusts_10m_max", weight: -0.5 },
-			],
-		},
-		SURFING: {
-			parameters: [
-				{ name: "temperature_2m_max", weight: 1.5 },
-				{ name: "temperature_2m_min", weight: 1.0 },
-				{ name: "precipitation_sum", weight: -8.0 },
-				{ name: "snowfall_sum", weight: -50.0 },
-				{ name: "wind_speed_10m_max", weight: 2.0 },
-				{ name: "wind_gusts_10m_max", weight: -1.0 },
-			],
-		},
-		OUTDOOR_SIGHTSEEING: {
-			parameters: [
-				{ name: "temperature_2m_max", weight: 1.2 },
-				{ name: "temperature_2m_min", weight: 1.2 },
-				{ name: "precipitation_sum", weight: -15.0 },
-				{ name: "snowfall_sum", weight: -5.0 },
-				{ name: "wind_speed_10m_max", weight: -0.8 },
-				{ name: "wind_gusts_10m_max", weight: -1.2 },
-			],
-		},
-	},
-}));
 
 describe("RankingService", () => {
 	describe("fromMeteoData", () => {
