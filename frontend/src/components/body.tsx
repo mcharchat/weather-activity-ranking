@@ -83,7 +83,7 @@ export function Body({
                       <div>{activityScore.toFixed(2)}/10</div>
                     </div>
                     <div>
-                      {activityScore > 7
+                      {activityScore > 6
                         ? "This day is good for " +
                           selectedActivity.replace(/_/g, " ").toLowerCase()
                         : "This day is not ideal for " +
