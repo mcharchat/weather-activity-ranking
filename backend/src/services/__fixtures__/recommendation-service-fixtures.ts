@@ -99,6 +99,55 @@ export const mockWeatherData = {
 			wind_gusts_10m_max: [20, 15],
 		},
 	} satisfies WeatherResponse,
+
+	withoutMarineData: {
+		latitude: -23.5505,
+		longitude: -46.6333,
+		generationtime_ms: 2.5,
+		utc_offset_seconds: -10800,
+		timezone: "America/Sao_Paulo",
+		timezone_abbreviation: "BRT",
+		elevation: 760,
+		daily: {
+			time: ["2024-03-26"],
+			temperature_2m_max: [25],
+			temperature_2m_min: [18],
+			precipitation_sum: [0],
+			snowfall_sum: [0],
+			wind_speed_10m_max: [15],
+			wind_gusts_10m_max: [20],
+		},
+	} satisfies WeatherResponse,
+};
+
+export const mockMarineData = {
+	withMarineData: {
+		latitude: -23.5505,
+		longitude: -46.6333,
+		generationtime_ms: 1.5,
+		utc_offset_seconds: -10800,
+		timezone: "America/Sao_Paulo",
+		timezone_abbreviation: "BRT",
+		elevation: 0,
+		daily: {
+			time: ["2024-03-26"],
+			wave_height_max: [2.5],
+		},
+	},
+
+	withoutMarineData: {
+		latitude: -23.5505,
+		longitude: -46.6333,
+		generationtime_ms: 1.5,
+		utc_offset_seconds: -10800,
+		timezone: "America/Sao_Paulo",
+		timezone_abbreviation: "BRT",
+		elevation: 0,
+		daily: {
+			time: ["2024-03-26"],
+			wave_height_max: [null],
+		},
+	},
 };
 
 export const mockRankings = {
@@ -148,6 +197,18 @@ export const mockRankings = {
 				{ activity: ActivityType.OUTDOOR_SIGHTSEEING, score: 8.1 },
 				{ activity: ActivityType.INDOOR_SIGHTSEEING, score: 7.8 },
 				{ activity: ActivityType.SURFING, score: 7.5 },
+				{ activity: ActivityType.SKIING, score: 0.0 },
+			],
+		},
+	] satisfies DailyRanking[],
+
+	withoutMarineData: [
+		{
+			date: "2024-03-26",
+			activities: [
+				{ activity: ActivityType.OUTDOOR_SIGHTSEEING, score: 7.2 },
+				{ activity: ActivityType.INDOOR_SIGHTSEEING, score: 6.5 },
+				{ activity: ActivityType.SURFING, score: 0.0 },
 				{ activity: ActivityType.SKIING, score: 0.0 },
 			],
 		},

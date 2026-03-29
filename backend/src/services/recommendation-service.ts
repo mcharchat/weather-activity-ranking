@@ -32,8 +32,16 @@ class RecommendationService {
 			],
 			forecast_days: 7,
 		});
+		const marineClient = OpenMeteoClient.marine();
+		const marineData = await marineClient.getMarineForecast({
+			latitude,
+			longitude,
+			daily: ["wave_height_max"],
+			forecast_days: 1,
+		});
 		const dailyrankings = RankingService.fromMeteoData({
 			daily: weatherData.daily,
+			hasMarineData: marineData.daily?.wave_height_max?.[0] !== null,
 		});
 		return {
 			latitude,

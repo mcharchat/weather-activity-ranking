@@ -20,8 +20,9 @@ class RankingService {
 	 */
 	static fromMeteoData(params: {
 		daily: DailyWeatherVariables;
+		hasMarineData: boolean;
 	}): DailyRanking[] {
-		const { daily } = params;
+		const { daily, hasMarineData } = params;
 
 		this.validateWeatherData(daily);
 
@@ -29,7 +30,7 @@ class RankingService {
 
 		return daily.time.map((date, dayIndex) => ({
 			date,
-			activities: this.calculateActivityRankings(daily, dayIndex, activityKeys),
+			activities: this.calculateActivityRankings(daily, dayIndex, activityKeys, hasMarineData),
 		}));
 	}
 
@@ -49,12 +50,14 @@ class RankingService {
 	 * @param daily - Daily weather variables
 	 * @param dayIndex - Index of the day to calculate rankings for
 	 * @param activityKeys - Array of activity keys to rank
+	 * @param hasMarineData - Indicates if marine data is available for ranking
 	 * @returns Array of ranked activities for the day
 	 */
 	private static calculateActivityRankings(
 		daily: DailyWeatherVariables,
 		dayIndex: number,
 		activityKeys: ActivityType[],
+		hasMarineData: boolean,
 	): RankedActivity[] {
 		return activityKeys.map((activityKey) => {
 			const activityConfig = activitiesConfig[activityKey] as ActivityConfig;
@@ -63,6 +66,7 @@ class RankingService {
 				dayIndex,
 				activityConfig,
 				activityKey,
+				hasMarineData,
 			);
 
 			return {
@@ -85,6 +89,7 @@ class RankingService {
 		dayIndex: number,
 		activityConfig: ActivityConfig,
 		activityKey: ActivityType,
+		hasMarineData: boolean,
 	): number {
 		return activityConfig.parameters.reduce((totalScore, parameter) => {
 			const weatherValue = this.getWeatherValue(
@@ -96,6 +101,7 @@ class RankingService {
 				weatherValue,
 				parameter.name,
 				activityKey,
+				hasMarineData,
 			);
 			return totalScore + normalizedValue * parameter.weight;
 		}, 0);
@@ -137,13 +143,18 @@ class RankingService {
 	 * @param value - The actual weather value
 	 * @param parameterName - The name of the weather parameter to normalize
 	 * @param activityKey - The key of the activity for which the parameter is being normalized
+	 * @param hasMarineData - Indicates if marine data is available for normalization
 	 * @returns Normalized score between 0 and 1
 	 */
 	private static normalizeWeatherValue(
 		value: number,
 		parameterName: string,
 		activityKey: ActivityType,
+		hasMarineData: boolean,
 	): number {
+		if (!hasMarineData && activityKey === "SURFING") {
+			return 0;
+		}
 		const parameterConfig: ActivityParameter | undefined = activitiesConfig[activityKey].parameters.find(
 			(p) => p.name === parameterName,
 		);
