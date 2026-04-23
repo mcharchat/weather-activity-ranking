@@ -181,7 +181,6 @@ describe("CoordinatesService", () => {
 
 			expect(mockGeocodingInstance.searchLocations).toHaveBeenCalledWith({
 				name: "Test Location",
-				count: 1,
 			});
 		});
 
