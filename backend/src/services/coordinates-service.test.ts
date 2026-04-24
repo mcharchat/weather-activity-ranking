@@ -181,7 +181,6 @@ describe("CoordinatesService", () => {
 
 			expect(mockGeocodingInstance.searchLocations).toHaveBeenCalledWith({
 				name: "Test Location",
-				count: 1,
 			});
 		});
 
@@ -207,7 +206,7 @@ describe("CoordinatesService", () => {
 
 			await expect(
 				coordinatesService.getLocationCoordinates(testLocations.invalid.empty),
-			).rejects.toThrow("Location not found: ");
+			).rejects.toThrow("Location name cannot be empty");
 		});
 
 		it("should handle special characters in location name", async () => {

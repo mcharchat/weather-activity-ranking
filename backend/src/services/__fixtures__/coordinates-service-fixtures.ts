@@ -123,25 +123,21 @@ export const expectedApiCalls = {
 		saoPaulo: {
 			params: {
 				name: "São Paulo",
-				count: 1,
 			},
 		},
 		london: {
 			params: {
 				name: "London",
-				count: 1,
 			},
 		},
 		newYork: {
 			params: {
 				name: "New York",
-				count: 1,
 			},
 		},
 		nonExistent: {
 			params: {
 				name: "NonExistentCity123",
-				count: 1,
 			},
 		},
 	},
